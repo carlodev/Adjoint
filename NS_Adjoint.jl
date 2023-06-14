@@ -96,6 +96,7 @@ bc_cylinder = - ∇(uh) ⋅ VectorValue(1, 0)
 writevtk(Ω,"ins-results",cellfields=["uh"=>uh,"ph"=>ph, "bc_cylinder"=>bc_cylinder])
 writevtk(Γ,"ins-results_cylinder",cellfields=["uh"=>uh,"ph"=>ph, "bc_cylinder"=>bc_cylinder])
 
+
 #Adjoint
 
 
@@ -118,6 +119,9 @@ op_adj = AffineFEOperator(var_eq_adj,b_eq_adj,X_adj,Y_adj)
 
 ls = LUSolver()
 solver_adj = LinearFESolver(ls)
+
+d = VectorValue(1,0)
+Fp = sum(∫(ph⋅n_Γ⋅d)dΓ)
 
 uh_adj,ph_adj = solve(solver_adj,op)
 writevtk(Ω,"results_adj",cellfields=["uh_adj"=>uh_adj, "ph_adj"=>ph_adj])
